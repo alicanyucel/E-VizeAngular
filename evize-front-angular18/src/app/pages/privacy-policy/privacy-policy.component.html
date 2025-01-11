@@ -1,0 +1,9 @@
+<section class="bg-white px-4 pt-10 pb-10 justify-center flex w-full">
+  <div class="max-w-[1280px] flex flex-col gap-7 w-full">
+    <h1 class="font-semibold text-[#E34545] text-[20px] text-center">
+      {{ section?.content?.title }}
+    </h1>
+
+    <div [innerHTML]="section?.content?.text | safeHtml"></div>
+  </div>
+</section>

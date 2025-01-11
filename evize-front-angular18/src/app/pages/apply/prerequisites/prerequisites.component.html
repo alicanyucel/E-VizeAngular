@@ -1,0 +1,93 @@
+<section class="bg-white px-4 py-7">
+  <div class="flex justify-center w-full">
+    <div class="w-full max-w-[1280px] flex flex-col gap-6 md:gap-14">
+      <p class="font-medium text-[#E34545] text-center">
+        {{ section?.steps?.title }}
+      </p>
+      <app-application-status-bar [step]="3"></app-application-status-bar>
+
+      <div class="flex flex-col xl:flex-row gap-6 md:gap-14">
+        <div
+          class="bg-[#E34545]/20 px-7 py-8 bg-opacity-20 rounded-xl shadow-lg flex flex-col gap-4 h-fit w-full xl:max-w-[350px] xl:order-last"
+        >
+          <p class="text-[#2B2B2B] font-semibold text-center">
+            {{ section?.conditions?.notes?.label }}
+          </p>
+          <div class="flex flex-row gap-1.5" *ngFor="let note of getNotes()">
+            <svg
+              width="8"
+              class="shrink-0 mt-1"
+              height="8"
+              viewBox="0 0 8 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="8" height="8" rx="4" fill="#2B2B2B" />
+            </svg>
+            <p class="text-[12px]">
+              {{ note[""] }}
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-6">
+          <div
+            class="flex flex-row gap-2"
+            *ngFor="let condition of modelConditions; let i = index"
+          >
+            <input
+              type="checkbox"
+              [id]="'aggreement_' + i"
+              name="aggreement"
+              [checked]="condition.checked"
+              [(ngModel)]="condition.checked"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="checkConditions()"
+              value="false"
+              class="mt-1"
+            />
+            <label [for]="'aggreement_' + i" class="font-medium select-none">
+              {{ getConditionTranslation(condition.condition) }}</label
+            >
+          </div>
+
+          <div class="flex flex-row gap-2">
+            <input
+              type="checkbox"
+              id="finalaggreement"
+              name="finalaggreement"
+              [(ngModel)]="finalaggreement"
+              [ngModelOptions]="{ standalone: true }"
+              [checked]="finalaggreement"
+              (change)="checkConditions()"
+              value="false"
+              class="mt-1"
+            />
+            <label for="finalaggreement" class="font-medium select-none">
+              {{ section?.conditions?.checkbox }}</label
+            >
+          </div>
+          <div class="flex flex-row gap-4 self-end">
+            <button
+              class="flex flex-row gap-4 items-center border border-[#E34545] rounded-md py-3 min-w-[120px] w-full md:w-fit justify-center"
+              (click)="back()"
+            >
+              <p class="font-medium text-[#E34545]">
+                {{ section?.conditions?.back }}
+              </p>
+            </button>
+            <button
+              [class]="conditions ? 'bg-[#E34545]' : 'bg-gray-500'"
+              class="flex flex-row gap-4 items-center rounded-md py-3 min-w-[200px] w-full md:w-fit justify-center self-end transition duration-300"
+              (click)="nextStep()"
+            >
+              <p class="font-medium text-white">
+                {{ section?.conditions?.continue }}
+              </p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

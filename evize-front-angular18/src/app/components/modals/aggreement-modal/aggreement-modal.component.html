@@ -1,0 +1,224 @@
+<dialog
+  id="modal"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible && application"
+>
+  <div class="p-4 w-fit max-w-5xl max-h-screen">
+    <!-- Modal content -->
+    <div
+      class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl p-8"
+    >
+      <!-- Modal header -->
+      <div class="flex items-center justify-end">
+        <button
+          type="button"
+          title="Close"
+          class="cursor-pointer text-[26px] font-bold opacity-25 hover:opacity-50"
+          aria-label="x"
+          (click)="toggle()"
+        >
+          <svg
+            width="19"
+            height="18"
+            viewBox="0 0 19 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.29688 17L17.2969 1"
+              stroke="#170F49"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.2969 17L1.29688 1"
+              stroke="#170F49"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div
+        class="px-4 md:px-5 text-[20px] py-10 overflow-auto flex justify-center items-center flex-col gap-6 max-w-[800px]"
+      >
+        <svg
+          width="55"
+          height="55"
+          viewBox="0 0 55 55"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_9_1408)">
+            <path
+              d="M55 27.5C55 12.3122 42.6878 0 27.5 0C12.3122 0 0 12.3122 0 27.5C0 42.6878 12.3122 55 27.5 55C42.6878 55 55 42.6878 55 27.5Z"
+              fill="#02B4CD"
+            />
+            <path
+              d="M27.4812 22.1468C27.9537 22.1534 28.4227 22.0637 28.8595 21.8832C29.2963 21.7026 29.6918 21.4351 30.0218 21.0968C30.36 20.7747 30.6286 20.3867 30.8108 19.9567C30.993 19.5266 31.0851 19.0638 31.0812 18.5968C31.0714 17.6453 30.6889 16.7356 30.0158 16.0631C29.3426 15.3906 28.4326 15.0088 27.4812 14.9999C27.0096 14.9928 26.5417 15.0843 26.1075 15.2683C25.6733 15.4523 25.2822 15.7249 24.9593 16.0686C24.625 16.3992 24.3606 16.7937 24.1818 17.2285C24.003 17.6634 23.9135 18.1298 23.9187 18.5999C23.9203 19.5442 24.2962 20.4494 24.9639 21.1171C25.6317 21.7849 26.5368 22.1607 27.4812 22.1624V22.1468Z"
+              fill="white"
+            />
+            <path
+              d="M24.1624 24.6216H30.6499V40.0153H24.1624V24.6216Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_9_1408">
+              <rect width="55" height="55" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+        <p class="font-semibold text-[24px] text-center">
+          Lütfen İşleme Devam Edebilmek İçin Verdiğiniz Bilgileri Doğrulayın
+        </p>
+        <div class="flex flex-col gap-3 pt-2 w-full">
+          <p class="font-medium">Adı</p>
+          <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+            <input
+              [(ngModel)]="application.member.name"
+              readonly
+              [ngModelOptions]="{ standalone: true }"
+              type="text"
+              class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+              placeholder=""
+            />
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              Soyadı<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.member.surname"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              İkinci Adı<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.secondName"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              Doğum Tarihi<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.member.birthDay"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              Anne Adı<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.member.motherName"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              Baba Adı<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.member.fatherName"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              E-posta Adresi<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.member.eMail"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <div class="flex flex-col gap-3 pt-2 w-full">
+            <p class="font-medium">
+              Telefon No<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border border-[#DDDDDD] rounded-md px-2 py-2">
+              <input
+                [(ngModel)]="application.member.phone"
+                readonly
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px]"
+                placeholder=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-row gap-4 pt-4">
+          <button
+            class="flex flex-row items-center bg-[#BABABA] rounded-full py-3 min-w-[200px] w-full md:w-fit justify-center"
+            (click)="back()"
+          >
+            <p class="text-base text-white">GERİ DÖN</p>
+          </button>
+          <button
+            class="flex flex-row items-center bg-[#02B4CD] rounded-full py-3 min-w-[200px] w-full md:w-fit justify-center"
+            (click)="toggle()"
+          >
+            <p class="text-base text-white">ONAYLIYORUM</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>

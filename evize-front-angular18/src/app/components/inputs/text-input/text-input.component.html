@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-2 pt-2 w-full" *ngIf="mode == 'normal'">
+  <p class="font-medium" [class]="error == '' ? '' : 'text-[#E34545]'">
+    {{ section?.label }} <span class="text-[#E34545]" *ngIf="required">*</span>
+  </p>
+  <div
+    class="border rounded-md px-2"
+    [class]="error == '' ? 'border-[#DDDDDD]' : 'border-[#E34545]'"
+  >
+    <input
+      type="text"
+      [(ngModel)]="value"
+      [value]="value"
+      (input)="reset($event)"
+      [disabled]="disabled"
+      [ngModelOptions]="{ standalone: true }"
+      class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[50px] bg-transparent"
+      [placeholder]="section?.placeholder"
+    />
+  </div>
+  <p *ngIf="error != ''" class="text-[#E34545] text-[14px] error">
+    {{ getErrorMessage(error) }}
+  </p>
+</div>
+<div class="flex flex-col gap-2 w-full h-full" *ngIf="mode == 'light'">
+  <p
+    class="font-medium text-[14px]"
+    [class]="error == '' ? '' : 'text-[#E34545]'"
+  >
+    {{ section?.label }} <span class="text-[#E34545]" *ngIf="required">*</span>
+  </p>
+  <div
+    class="bg-white rounded-md px-2 py-1"
+    [class]="error == '' ? '' : 'border border-[#E34545]'"
+  >
+    <input
+      type="text"
+      [(ngModel)]="value"
+      (input)="reset($event)"
+      [disabled]="disabled"
+      [ngModelOptions]="{ standalone: true }"
+      class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px] bg-transparent"
+      [placeholder]="section?.placeholder"
+    />
+  </div>
+  <p *ngIf="error != ''" class="text-[#E34545] text-[14px] error">
+    {{ getErrorMessage(error) }}
+  </p>
+</div>
+<div *ngIf="mode == 'captcha'">
+  <div
+    class="bg-white rounded-md px-2 py-1 w-full h-min"
+    [class]="error == '' ? '' : 'border border-[#E34545]'"
+  >
+    <input
+      type="text"
+      [(ngModel)]="value"
+      (input)="reset($event)"
+      [disabled]="disabled"
+      [ngModelOptions]="{ standalone: true }"
+      class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E] h-[42px] bg-transparent"
+      [placeholder]="placeholder"
+    />
+  </div>
+  <p *ngIf="error != ''" class="text-[#E34545] text-[14px] error">
+    {{ getErrorMessage(error) }}
+  </p>
+</div>

@@ -1,0 +1,111 @@
+<dialog
+  id="modal"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible"
+>
+  <div class="py-6 pl-6 pr-4 w-full max-h-screen max-w-[583px]">
+    <!-- Modal content -->
+    <div
+      class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl px-4 pt-4 pb-6"
+    >
+      <!-- Modal header -->
+      <div class="flex justify-center pt-4 items-start">
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="4" y="4" width="48" height="48" rx="24" fill="#E2F2FE" />
+          <rect
+            x="4"
+            y="4"
+            width="48"
+            height="48"
+            rx="24"
+            stroke="#F2F8FE"
+            stroke-width="8"
+          />
+          <g clip-path="url(#clip0_1773_14460)">
+            <g clip-path="url(#clip1_1773_14460)">
+              <path
+                d="M28 16C21.383 16 16 21.383 16 28C16 34.617 21.383 40 28 40C34.617 40 40 34.617 40 28C40 21.383 34.617 16 28 16ZM28 21C28.552 21 29 21.448 29 22C29 22.552 28.552 23 28 23C27.448 23 27 22.552 27 22C27 21.448 27.448 21 28 21ZM30.25 35H25.75C25.197 35 24.75 34.552 24.75 34C24.75 33.448 25.197 33 25.75 33H27V27H26.25C25.697 27 25.25 26.552 25.25 26C25.25 25.448 25.697 25 26.25 25H28C28.553 25 29 25.448 29 26V33H30.25C30.803 33 31.25 33.448 31.25 34C31.25 34.552 30.803 35 30.25 35Z"
+                fill="#205FD9"
+              />
+            </g>
+          </g>
+          <defs>
+            <clipPath id="clip0_1773_14460">
+              <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(16 16)"
+              />
+            </clipPath>
+            <clipPath id="clip1_1773_14460">
+              <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(16 16)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Modal body -->
+      <div class="pt-4 overflow-auto flex flex-col gap-2 px-2 text-center">
+        <div *ngIf="selectedModel != null" class="flex flex-col gap-2">
+          <p class="text-[14px]" [innerHTML]="getDescription()"></p>
+          <div class="flex flex-col text-center justify-center">
+            <p class="text-[14px]">
+              {{ applySection?.visaType?.entryAmount }}:
+              <span class="font-semibold text-[#205FD9]">{{
+                getEntryType()
+              }}</span>
+            </p>
+            <p class="text-[14px]">
+              {{ applySection?.visaType?.visaPrice }}:
+              <span class="font-semibold text-[#205FD9]"
+                >{{ getPrice() }} USD</span
+              >
+            </p>
+
+            <p class="text-[14px]">
+              {{ applySection?.payment?.transactionFee }}:
+              <span class="font-semibold text-[#205FD9]"
+                >{{ getFee() }} USD</span
+              >
+            </p>
+            <p class="text-[14px]">
+              {{ getInput("admitFee") }}:
+              <span class="font-semibold text-[#205FD9]"
+                >{{ getAdmitPrice() }} USD</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="px-2 pt-8 pb-2 flex flex-row gap-3 items-center">
+        <button
+          class="w-full h-12 flex items-center justify-center border border-[#D0D5DD] rounded-xl cursor-pointer shadow-md hover:border-[#333]"
+          (click)="cancel()"
+        >
+          {{ getInput("cancel") }}
+        </button>
+
+        <button
+          class="w-full h-12 flex items-center justify-center bg-[#205FD9] rounded-xl cursor-pointer shadow-md text-white"
+          (click)="apply()"
+        >
+          {{ getInput("understand") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>

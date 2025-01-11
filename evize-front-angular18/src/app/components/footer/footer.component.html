@@ -1,0 +1,91 @@
+<footer class="bg-[#F6F6F6]">
+  <div class="flex justify-center">
+    <div class="py-4 flex items-center flex-col justify-center gap-2 px-4 text-[#211E1F] max-w-[1280px]">
+      <img *ngIf="section?.logo?.asset" [src]="
+          apiUrl +
+          '/file/get?fileName=' +
+          section?.logo?.asset +
+          '&mimeType=image%2Fpng'
+        " class="w-28" alt="e-Visa" />
+    </div>
+  </div>
+  <div class="border-t border-[#DBDBDB] flex justify-center">
+    <div class="max-w-[1280px] py-4 flex items-center text-center flex-col justify-center gap-2 px-4 text-[#211E1F]">
+      <span class="font-semibold text-[14px]">{{
+        section?.copyrightText
+        }}</span>
+      <p class="text-[14px]">
+        {{ section?.content?.text }} |
+        <a routerLink="/privacy-policy" class="font-semibold cursor-pointer">{{
+          section?.content?.privacyPolicy
+          }}</a>
+        |
+        <a routerLink="/terms-and-conditions" class="font-semibold cursor-pointer">{{
+          section?.content?.termsAndConditions }}</a>
+      </p>
+      <div class="flex flex-row gap-8 items-center pt-1">
+        <a *ngIf="section?.socials?.facebook" [href]="section?.socials?.facebook" title="Facebook" target="_blank"
+          class="w-4">
+          <svg class="h-3 w-auto" width="5" height="11" viewBox="0 0 5 11" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M1.27638 11V5.83848H0V3.98009H1.27638V2.39277C1.27638 1.14545 2.03035 0 3.76765 0C4.47105 0 4.99118 0.072105 4.99118 0.072105L4.9502 1.80753C4.9502 1.80753 4.41975 1.80201 3.84089 1.80201C3.2144 1.80201 3.11402 2.11072 3.11402 2.62311V3.98009H5L4.91794 5.83848H3.11402V11H1.27638Z"
+              fill="black" />
+          </svg>
+        </a>
+        <a *ngIf="section?.socials?.twitter" [href]="section?.socials?.twitter" title="Twitter" target="_blank"
+          class="w-4">
+          <svg class="h-3 w-auto" width="11" height="11" viewBox="0 0 11 11" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1227_658)">
+              <path
+                d="M6.38673 4.65879L10.3818 0.0078125H9.43513L5.96623 4.04625L3.1956 0.0078125H0L4.1897 6.1146L0 10.9919H0.946795L4.61011 6.72723L7.53608 10.9919H10.7317L6.38664 4.65879H6.38691H6.38673Z"
+                fill="#211E1F" />
+            </g>
+            <defs>
+              <clipPath id="clip0_1227_658">
+                <rect width="10.7316" height="10.9841" fill="white" transform="translate(0 0.0078125)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </a>
+        <a *ngIf="section?.socials?.instagram" [href]="section?.socials?.instagram" title="Instagram" target="_blank"
+          class="w-4">
+          <svg class="h-3 w-auto" width="13" height="11" viewBox="0 0 13 11" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6.72983 3.66589C5.62811 3.66589 4.72902 4.49007 4.72902 5.5C4.72902 6.50993 5.62811 7.33411 6.72983 7.33411C7.83156 7.33411 8.73065 6.50993 8.73065 5.5C8.73065 4.49007 7.83156 3.66589 6.72983 3.66589ZM12.7308 5.5C12.7308 4.74049 12.7383 3.98785 12.6918 3.22972C12.6452 2.34912 12.4261 1.56759 11.7236 0.923658C11.0197 0.278347 10.1686 0.0788372 9.20796 0.0361834C8.37942 -0.00647041 7.55838 0.000409262 6.73133 0.000409262C5.90279 0.000409262 5.08175 -0.00647041 4.25471 0.0361834C3.29408 0.0788372 2.44152 0.279723 1.73905 0.923658C1.03509 1.56897 0.817448 2.34912 0.770917 3.22972C0.724387 3.98923 0.731892 4.74186 0.731892 5.5C0.731892 6.25814 0.724387 7.01215 0.770917 7.77028C0.817448 8.65088 1.03659 9.43241 1.73905 10.0763C2.44302 10.7217 3.29408 10.9212 4.25471 10.9638C5.08325 11.0065 5.90429 10.9996 6.73133 10.9996C7.55988 10.9996 8.38092 11.0065 9.20796 10.9638C10.1686 10.9212 11.0212 10.7203 11.7236 10.0763C12.4276 9.43103 12.6452 8.65088 12.6918 7.77028C12.7398 7.01215 12.7308 6.25951 12.7308 5.5ZM6.72983 8.32203C5.02621 8.32203 3.65131 7.06168 3.65131 5.5C3.65131 3.93832 5.02621 2.67797 6.72983 2.67797C8.43345 2.67797 9.80836 3.93832 9.80836 5.5C9.80836 7.06168 8.43345 8.32203 6.72983 8.32203ZM9.93444 3.22146C9.53668 3.22146 9.21547 2.92701 9.21547 2.56239C9.21547 2.19777 9.53668 1.90332 9.93444 1.90332C10.3322 1.90332 10.6534 2.19777 10.6534 2.56239C10.6535 2.64897 10.635 2.73472 10.5989 2.81473C10.5628 2.89475 10.5099 2.96744 10.4431 3.02867C10.3763 3.08989 10.297 3.13843 10.2097 3.17151C10.1224 3.2046 10.0289 3.22157 9.93444 3.22146Z"
+              fill="#211E1F" />
+          </svg>
+        </a>
+        <a *ngIf="section?.socials?.linkedIn" [href]="section?.socials?.linkedIn" title="Linked In" target="_blank">
+          <svg class="h-3 w-auto" width="12" height="11" viewBox="0 0 12 11" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3.22853 11V3.57832H0.870564V11H3.22853ZM2.04985 2.56441C2.87212 2.56441 3.38394 1.99451 3.38394 1.28232C3.36862 0.55408 2.87215 0 2.06546 0C1.25889 0 0.731445 0.554091 0.731445 1.28232C0.731445 1.99454 1.24314 2.56441 2.03446 2.56441H2.04985ZM4.53366 11H6.89163V6.85537C6.89163 6.63355 6.90695 6.41197 6.96921 6.25341C7.13968 5.81023 7.52766 5.35122 8.17903 5.35122C9.03228 5.35122 9.37363 6.03181 9.37363 7.02951V10.9999H11.7314V6.74442C11.7314 4.46477 10.5681 3.40408 9.01675 3.40408C7.74472 3.40408 7.18622 4.14792 6.87594 4.65455H6.89168V3.57816H4.53371C4.56466 4.27457 4.53366 11 4.53366 11Z"
+              fill="#211E1F" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-[#DBDBDB] flex justify-center">
+    <div class="max-w-[1280px] py-5 flex items-center flex-row justify-center gap-4 md:gap-6 lg:gap-10 px-4 flex-wrap">
+      <img src="/images/payment-methods/visa.png" class="h-5" alt="Visa" />
+      <img src="/images/payment-methods/mastercard.png" class="h-5" alt="Visa" />
+      <img src="/images/payment-methods/unionpay.png" class="h-5" alt="Union Pay" />
+      <img src="/images/payment-methods/alipay.png" class="h-5" alt="Alipay" />
+      <img src="/images/payment-methods/ideal.png" class="h-5" alt="ideal" />
+      <img src="/images/payment-methods/amex.png" class="h-5" alt="American Express" />
+      <img src="/images/payment-methods/jcb.png" class="h-5" alt="JCB" />
+      <img src="/images/payment-methods/eps.png" class="h-5" alt="eps" />
+      <img src="/images/payment-methods/bancontact.png" class="h-5" alt="Bancontact" />
+      <img src="/images/payment-methods/przelewy.png" class="h-5" alt="Przelewy" />
+      <img src="/images/payment-methods/cb.png" class="h-5" alt="CB" />
+      <img src="/images/payment-methods/sofort.png" class="h-5" alt="Sofort" />
+      <img src="/images/payment-methods/payu.png" class="h-5" alt="PayU" />
+      <img src="/images/payment-methods/diners-club.png" class="h-5" alt="Diners Club" />
+      <img src="/images/payment-methods/discover.png" class="h-5" alt="Discover" />
+    </div>
+  </div>
+</footer>

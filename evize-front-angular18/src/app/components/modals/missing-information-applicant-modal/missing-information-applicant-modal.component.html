@@ -1,0 +1,46 @@
+<dialog id="modal" data-modal-backdrop="static" tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible">
+  <div class="py-6 pl-6 pr-4 w-full max-h-screen max-w-[583px]">
+    <!-- Modal content -->
+    <div class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl px-4 pt-4 pb-6">
+      <!-- Modal header -->
+      <div class="flex justify-center items-start relative">
+        <svg width="80" height="80" viewBox="0 0 56 56" class="pt-4" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="48" height="48" rx="24" fill="#FEE4E2" />
+          <rect x="4" y="4" width="48" height="48" rx="24" stroke="#FEF3F2" stroke-width="8" />
+          <path
+            d="M30.9915 28.4604L37.2868 22.1645C37.6955 21.7004 37.912 21.0982 37.8922 20.4804C37.8725 19.8625 37.618 19.2753 37.1805 18.8382C36.743 18.4011 36.1552 18.1468 35.5368 18.1271C34.9184 18.1074 34.3156 18.3237 33.8511 18.732L27.5494 25.0214L21.2363 18.7126C21.0102 18.4867 20.7417 18.3075 20.4463 18.1852C20.1508 18.0629 19.8342 18 19.5144 18C19.1946 18 18.878 18.0629 18.5825 18.1852C18.2871 18.3075 18.0186 18.4867 17.7925 18.7126C17.5664 18.9385 17.387 19.2067 17.2646 19.5019C17.1422 19.797 17.0793 20.1134 17.0793 20.4329C17.0793 20.7524 17.1422 21.0687 17.2646 21.3639C17.387 21.6591 17.5664 21.9273 17.7925 22.1532L24.1072 28.4604L17.812 34.7547C17.5651 34.9752 17.3658 35.2437 17.2264 35.5437C17.0869 35.8438 17.0102 36.1692 17.001 36.4999C16.9917 36.8306 17.0501 37.1597 17.1725 37.4671C17.2949 37.7745 17.4788 38.0537 17.713 38.2877C17.9472 38.5216 18.2266 38.7053 18.5343 38.8277C18.842 38.95 19.1714 39.0083 19.5025 38.999C19.8335 38.9898 20.1591 38.9132 20.4595 38.7738C20.7598 38.6345 21.0286 38.4354 21.2493 38.1888L27.5494 31.8994L33.843 38.1888C34.2997 38.645 34.919 38.9014 35.5649 38.9014C36.2107 38.9014 36.8301 38.645 37.2868 38.1888C37.7434 37.7325 38 37.1137 38 36.4685C38 35.8232 37.7434 35.2044 37.2868 34.7482L30.9915 28.4604Z"
+            fill="#D92D20" />
+        </svg>
+      </div>
+
+      <!-- Modal body -->
+      <div class="pt-4 overflow-auto flex flex-col gap-2 px-2 text-center">
+        <p class="text-[#475467] font-semibold text-[18px]">
+          {{ getInput("missingInformation") }}
+        </p>
+        <p class="text-[#475467]">
+          {{ getInput("missingInformationText") }}
+        </p>
+        <div class="flex flex-col gap-2" *ngFor="let error of errors">
+          <p class="text-[#475467] font-semibold text-[18px]">
+            {{error.name}}</p>
+          <ul class="list-disc list-inside">
+            <li *ngFor="let subError of error.subErrors">
+              {{ subError }}
+            </li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="px-2 pt-8 pb-2 flex flex-row gap-3 items-center">
+        <button
+          class="w-full h-12 flex items-center justify-center bg-[#D92D20] rounded-xl cursor-pointer shadow-md text-white"
+          (click)="toggle()">
+          {{ getInput("understand") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>

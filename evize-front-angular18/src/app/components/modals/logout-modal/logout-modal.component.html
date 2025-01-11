@@ -1,0 +1,43 @@
+<dialog
+  id="modal"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible"
+>
+  <div
+    class="py-8 pl-8 pr-4 sm:w-fit max-w-5xl max-h-screen w-full sm:min-w-[400px]"
+  >
+    <div
+      class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl p-4 pt-10 sm:p-12"
+    >
+      <div
+        class="px-4 md:px-5 text-[20px] overflow-auto flex justify-center items-center flex-col gap-6 max-w-[800px]"
+      >
+        <svg
+          class="shrink-0 mt-1.5"
+          width="32"
+          height="32"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_1_6623)">
+            <path
+              d="M8 0C3.57841 0 0 3.578 0 8C0 12.4215 3.578 16 8 16C12.4216 16 16 12.422 16 8C16 3.57847 12.422 0 8 0ZM8.82153 11.1757C8.82153 11.4284 8.45297 11.6811 8.00016 11.6811C7.52628 11.6811 7.18934 11.4284 7.18934 11.1757V7.16356C7.18934 6.86872 7.52631 6.66859 8.00016 6.66859C8.45297 6.66859 8.82153 6.86872 8.82153 7.16356V11.1757ZM8.00019 5.69987C7.51578 5.69987 7.13672 5.34184 7.13672 4.94166C7.13672 4.5415 7.51581 4.194 8.00019 4.194C8.47406 4.194 8.85319 4.5415 8.85319 4.94166C8.85319 5.34184 8.47403 5.69987 8.00019 5.69987Z"
+              fill="#E34545"
+            />
+          </g>
+          <defs>
+            <clipPath id="cflip0_1_6623">
+              <rect width="16" height="16" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+        <p class="text-center">
+          {{ section?.logout?.text }}
+        </p>
+      </div>
+    </div>
+  </div>
+</dialog>

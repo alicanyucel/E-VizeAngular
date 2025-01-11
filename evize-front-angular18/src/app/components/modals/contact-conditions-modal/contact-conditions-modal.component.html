@@ -1,0 +1,102 @@
+<dialog
+  id="modal"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible"
+>
+  <div class="py-6 pl-6 pr-4 w-full max-h-screen max-w-[583px]">
+    <div
+      class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl px-4 pt-4 pb-6"
+    >
+      <div class="flex justify-center items-start pt-4">
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="4" y="4" width="48" height="48" rx="24" fill="#FEF0C7" />
+          <rect
+            x="4"
+            y="4"
+            width="48"
+            height="48"
+            rx="24"
+            stroke="#FFFAEB"
+            stroke-width="8"
+          />
+          <g clip-path="url(#clip0_1773_14517)">
+            <path
+              d="M35.9422 35.2927H20.0343C18.2168 35.2927 16.7383 36.7712 16.7383 38.5888V39.2479H39.2383V38.5888C39.2383 36.7712 37.7598 35.2927 35.9422 35.2927Z"
+              fill="#E2B101"
+            />
+            <path
+              d="M34.9341 27.7787C34.9341 23.9491 31.8184 20.8333 27.9885 20.8333C24.1587 20.8333 21.043 23.9488 21.043 27.7787V33.9557H34.9341V27.7787ZM28.6443 32.3016H27.3259V30.9832H28.6443V32.3016ZM28.6443 29.7665H27.3259V23.4144H28.6443V29.7665Z"
+              fill="#E2B101"
+            />
+            <path
+              d="M27.3281 16.7617H28.6465V19.4009H27.3281V16.7617Z"
+              fill="#E2B101"
+            />
+            <path
+              d="M36.6504 27.8542H39.2384V29.1726H36.6504V27.8542Z"
+              fill="#E2B101"
+            />
+            <path
+              d="M16.7383 27.8542H19.3047V29.1726H16.7383V27.8542Z"
+              fill="#E2B101"
+            />
+            <path
+              d="M34.125 21.4447L36.1958 19.374L37.1281 20.3061L35.0573 22.377L34.125 21.4447Z"
+              fill="#E2B101"
+            />
+            <path
+              d="M19.3539 20.8113L20.9084 22.366L21.8406 21.434L19.7818 19.375L18.8496 20.3072L19.3539 20.8115V20.8113Z"
+              fill="#E2B101"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_1773_14517">
+              <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(16 16)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Modal body -->
+      <div class="pt-4 overflow-auto flex flex-col gap-2 px-2 text-center">
+        <p
+          class="font-semibold text-[18px]"
+          [innerHTML]="section?.conditions?.title"
+        ></p>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let condition of section?.conditions?.conditions">
+            {{ getValue(condition) }}
+          </li>
+        </ul>
+      </div>
+      <div class="px-2 pt-8 pb-2 flex flex-row gap-3 items-center">
+        <button
+          class="w-full h-12 flex items-center justify-center border border-[#D0D5DD] rounded-xl cursor-pointer shadow-md hover:border-[#333]"
+          (click)="cancel()"
+        >
+          {{ getInput("cancel") }}
+        </button>
+
+        <button
+          class="w-full h-12 flex items-center justify-center bg-[#EED202] rounded-xl cursor-pointer shadow-md text-black"
+          (click)="toggle()"
+        >
+          {{ getInput("understand") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>

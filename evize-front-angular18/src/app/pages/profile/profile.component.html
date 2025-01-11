@@ -1,0 +1,171 @@
+<section class="bg-white px-4 py-7 md:py-14 flex justify-center">
+  <div class="max-w-[1280px] w-full">
+    <div class="flex flex-col md:flex-row bg-white gap-6 md:gap-12">
+      <profile-menu active="profile"></profile-menu>
+      <div class="w-full">
+        <profile-breadcrumb [active]="section?.breadcrumb?.personalInformation"></profile-breadcrumb>
+
+        <div class="flex flex-col lg:flex-row justify-between gap-4 items-start">
+          <p class="text-[20px] font-medium text-[#E34545] pt-4 shrink-0">
+            {{ section?.breadcrumb?.personalInformation }}
+          </p>
+        </div>
+
+        <div class="pt-6 flex flex-col lg:flex-row gap-6 md:gap-12">
+          <div class="flex flex-col gap-5 w-full max-w-[800px]" *ngIf="user">
+            <div class="flex flex-col gap-6 md:flex-row">
+              <div class="w-full">
+                <text-input max="50" [(value)]="user.name" key="firstName" [(error)]="errors.name"
+                  [required]="true"></text-input>
+              </div>
+              <div class="w-full">
+                <text-input max="50" [(value)]="user.secondName" key="secondName"></text-input>
+              </div>
+            </div>
+            <text-input max="50" [(value)]="user.surname" key="lastName" [(error)]="errors.surname"></text-input>
+            <date-input [(value)]="user.birthDay" key="birthday" [(error)]="errors.birthDay" [required]="true"
+              [maxDate]="today" [minDate]="minBirthday"></date-input>
+
+            <div class="flex flex-col gap-3 pt-2 w-full">
+              <p class="font-medium">
+                {{ getInput("nationality")?.label
+                }}<span class="text-[#E34545]">*</span>
+              </p>
+              <div class="border border-[#DDDDDD] rounded-md">
+                <ng-select [clearable]="false" [searchable]="true" (change)="errors.nationalityGuid = ''"
+                  [(ngModel)]="user.nationalityGuid" [ngModelOptions]="{ standalone: true }"
+                  [placeholder]="getInput('nationality')?.placeholder">
+                  <ng-option *ngFor="let c of translatedNationalities" [value]="c.guid">
+                    {{ c.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 pt-2 w-full">
+              <p class="font-medium">
+                {{ getInput("gender")?.label
+                }}<span class="text-[#E34545]">*</span>
+              </p>
+              <div class="border border-[#DDDDDD] rounded-md">
+                <ng-select [clearable]="false" [searchable]="false" (change)="errors.gender = ''"
+                  [(ngModel)]="user.gender" [ngModelOptions]="{ standalone: true }"
+                  [placeholder]="getInput('gender')?.placeholder">
+                  <ng-option value="1">
+                    {{ getGender("Erkek") }}
+                  </ng-option>
+                  <ng-option value="2">
+                    {{ getGender("Kadın") }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-6 md:flex-row">
+              <div class="w-full">
+                <text-input max="50" [(value)]="user.motherName" key="motherName" [(error)]="errors.motherName"
+                  [required]="false"></text-input>
+              </div>
+              <div class="w-full">
+                <text-input max="50" [(value)]="user.fatherName" key="fatherName" [(error)]="errors['fatherName']"
+                  [required]="false"></text-input>
+              </div>
+            </div>
+
+            <text-input max="100" [(value)]="user.address" key="address" [(error)]="errors['address']"
+              [required]="true"></text-input>
+            <phone-input *ngIf="translatedNationalitiesPhone" [translatedCountries]="translatedNationalitiesPhone"
+              [(phoneCodeCountryGuid)]="user.phoneCodeGuid" [(value)]="user.phone" key="phoneNumber"
+              [(error)]="errors.phoneNumber" [required]="true"></phone-input>
+            <text-input [max]="100" [(value)]="user.eMail" key="email" [(error)]="errors.eMail"
+              [required]="true"></text-input>
+
+            <div class="flex flex-row gap-2" *ngIf="success">
+              <p class="font-medium text-[20px]">
+                {{ success }}
+              </p>
+            </div>
+            <div class="flex flex-row justify-end gap-4">
+              <button
+                class="flex flex-row gap-4 items-center py-3 px-9 border border-[#E34545] rounded-md w-full md:w-fit justify-center self-end"
+                (click)="refresh()">
+                <p class="font-semibold text-[14px] text-[#E34545]">
+                  {{ section?.personalInformation?.inputs?.cancel }}
+                </p>
+              </button>
+
+              <button
+                class="flex flex-row gap-4 items-center bg-[#E34545] rounded-md py-3 px-9 w-full md:w-fit justify-center self-end"
+                (click)="save()">
+                <p class="font-semibold text-[14px] text-white">
+                  {{ section?.personalInformation?.inputs?.update }}
+                </p>
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 order-first lg:order-last lg:max-w-[200px]">
+            <div class="bg-[#F2F2F2] w-[200px] h-60 flex justify-center items-center shrink-0 overflow-hidden">
+              <label for="upload" class="flex flex-col items-center gap-2 cursor-pointer relative">
+                <img alt="" *ngIf="user?.photo" [src]="
+                    apiUrl +
+                    '/file/get?fileName=' +
+                    user.photo +
+                    '&mimeType=image%2Fpng'
+                  " class="w-full h-auto object-cover object-center" />
+                <svg class="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  [class]="user?.photo ? 'opacity-0' : ''" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M14 2C14 0.89543 13.1046 0 12 0C10.8954 0 10 0.89543 10 2V10H2C0.8954 10 0 10.8954 0 12C0 13.1046 0.8954 14 2 14H10V22C10 23.1046 10.8954 24 12 24C13.1046 24 14 23.1046 14 22V14H22C23.1046 14 24 13.1046 24 12C24 10.8954 23.1046 10 22 10H14V2Z"
+                    fill="#333" />
+                </svg>
+              </label>
+
+              <input id="upload" type="file" class="hidden" accept="image/*" (change)="onAssetChange($event)" />
+            </div>
+            <div class="flex flex-row gap-1" *ngIf="user?.photo == null || user?.photo == ''">
+              <svg class="shrink-0 mt-1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1_6623)">
+                  <path
+                    d="M8 0C3.57841 0 0 3.578 0 8C0 12.4215 3.578 16 8 16C12.4216 16 16 12.422 16 8C16 3.57847 12.422 0 8 0ZM8.82153 11.1757C8.82153 11.4284 8.45297 11.6811 8.00016 11.6811C7.52628 11.6811 7.18934 11.4284 7.18934 11.1757V7.16356C7.18934 6.86872 7.52631 6.66859 8.00016 6.66859C8.45297 6.66859 8.82153 6.86872 8.82153 7.16356V11.1757ZM8.00019 5.69987C7.51578 5.69987 7.13672 5.34184 7.13672 4.94166C7.13672 4.5415 7.51581 4.194 8.00019 4.194C8.47406 4.194 8.85319 4.5415 8.85319 4.94166C8.85319 5.34184 8.47403 5.69987 8.00019 5.69987Z"
+                    fill="#333" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_1_6623">
+                    <rect width="16" height="16" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <p class="text-[#333]">
+                {{ section?.imageRules }}
+              </p>
+            </div>
+            <div class="flex flex-row gap-2 items-center error" *ngIf="photoError">
+              <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1_6623)">
+                  <path
+                    d="M8 0C3.57841 0 0 3.578 0 8C0 12.4215 3.578 16 8 16C12.4216 16 16 12.422 16 8C16 3.57847 12.422 0 8 0ZM8.82153 11.1757C8.82153 11.4284 8.45297 11.6811 8.00016 11.6811C7.52628 11.6811 7.18934 11.4284 7.18934 11.1757V7.16356C7.18934 6.86872 7.52631 6.66859 8.00016 6.66859C8.45297 6.66859 8.82153 6.86872 8.82153 7.16356V11.1757ZM8.00019 5.69987C7.51578 5.69987 7.13672 5.34184 7.13672 4.94166C7.13672 4.5415 7.51581 4.194 8.00019 4.194C8.47406 4.194 8.85319 4.5415 8.85319 4.94166C8.85319 5.34184 8.47403 5.69987 8.00019 5.69987Z"
+                    fill="#E34545" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_1_6623">
+                    <rect width="16" height="16" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <p class="text-[#E34545]">
+                {{ section?.imageError }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<profile-photo-error-modal [(visible)]="showImageError" [error]="imageError"></profile-photo-error-modal>
+<profile-update-success-modal [(visible)]="showUpdateSuccess" [missingPassport]="missingPassport" [retUrl]="retUrl"
+  [detail]="section?.breadcrumb?.personalInformation"></profile-update-success-modal>
+<missing-information-modal [(visible)]="showMissingInformation" [errors]="missingErrors"></missing-information-modal>

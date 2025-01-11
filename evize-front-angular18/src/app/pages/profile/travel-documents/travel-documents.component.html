@@ -1,0 +1,172 @@
+<section class="bg-white px-4 py-7 md:py-14 flex justify-center">
+  <div class="max-w-[1280px] w-full">
+    <div class="flex flex-col md:flex-row bg-white gap-6 md:gap-12">
+      <profile-menu active="myTravelDocuments"></profile-menu>
+
+      <div class="w-full">
+        <profile-breadcrumb [active]="section?.breadcrumb?.myTravelDocuments"></profile-breadcrumb>
+        <div class="flex flex-col lg:flex-row justify-between gap-4 items-start pb-4">
+          <p class="text-[20px] font-medium text-[#E34545] pt-4 shrink-0" *ngIf="!isNew">
+            {{ section?.breadcrumb?.myTravelDocuments }}
+          </p>
+          <p class="text-[20px] font-medium text-[#E34545] pt-4 shrink-0" *ngIf="isNew">
+            {{ getInput("addPassport") }}
+          </p>
+          <div class="flex justify-end w-full" *ngIf="!isNew">
+            <button
+              class="bg-[#E34545] p-4 lg:my-0 text-white rounded-md text-[14px] w-full lg:w-unset lg:max-w-[250px]"
+              (click)="addPerson()">
+              {{ getInput("addPassport") }}
+            </button>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-2" [class]="selectedIndex == -1 ? 'pb-4' : ''" *ngIf="isNew">
+          <div class="pt-4 flex flex-col lg:flex-row gap-6 md:gap-12 w-full">
+            <div class="flex flex-col gap-2 px-2 w-full">
+              <div class="flex flex-col gap-6 md:flex-row w-full">
+                <div class="flex flex-col gap-2 pt-2 w-full">
+                  <p class="font-medium" [class]="
+                      errors.travelDocumentGuid != '' ? 'text-[#E34545]' : ''
+                    ">
+                    {{ getInput("passportType")?.label
+                    }}<span class="text-[#E34545]">*</span>
+                  </p>
+                  <div class="border rounded-md" [class]="
+                      errors.travelDocumentGuid == ''
+                        ? 'border-[#DDDDDD]'
+                        : ' border-[#E34545]'
+                    ">
+                    <ng-select [clearable]="false" [searchable]="true" [(ngModel)]="new.travelDocumentGuid"
+                      [ngModelOptions]="{ standalone: true }" (change)="errors.travelDocumentGuid = ''"
+                      [placeholder]="getInput('passportType')?.placeholder">
+                      <ng-option *ngFor="let k of travelDocuments" [value]="k.guid">
+                        {{ getTranslation(k.guid) }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                  <p *ngIf="errors.travelDocumentGuid != ''" class="text-[#E34545] text-[14px] text-start error">
+                    {{ getErrorMessage(errors.travelDocumentGuid) }}
+                  </p>
+                </div>
+                <div class="w-full">
+                  <text-input [(value)]="new.passportNumber" key="passportNumber" [(error)]="errors.passportNumber"
+                    [required]="true" [max]="20"></text-input>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-6 md:flex-row w-full">
+                <div class="w-full">
+                  <date-input [(value)]="new.passportIssueDate" key="passportIssueDate"
+                    [(error)]="errors.passportIssueDate" [maxDate]="today" [required]="true"></date-input>
+                </div>
+                <div class="w-full">
+                  <date-input [(value)]="new.passportValidityDate" key="passportValidityDate" [minDate]="today"
+                    [(error)]="errors.passportValidityDate" [required]="true"></date-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-row justify-end gap-4 pt-4">
+            <button
+              class="flex flex-row gap-4 items-center py-3 px-9 border border-[#E34545] rounded-md w-full md:w-fit justify-center self-end"
+              (click)="isNew = false" *ngIf="memberTravelDocuments.length > 0">
+              <p class="font-semibold text-[14px] text-[#E34545]">
+                {{ getInput("cancel") }}
+              </p>
+            </button>
+
+            <button
+              class="flex flex-row gap-4 items-center bg-[#E34545] rounded-md py-3 px-9 w-full md:w-fit justify-center self-end"
+              (click)="save()">
+              <p class="font-semibold text-[14px] text-white">
+                {{ getInput("save") }}
+              </p>
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-6 flex flex-col lg:flex-col gap-6" *ngIf="!isNew">
+          <div class="flex flex-col gap-5 w-full">
+            <div class="flex flex-row items-center overflow-auto">
+              <p *ngIf="memberTravelDocuments?.length == 0" class="text-[14px]">
+                {{ section?.applications?.noApplications }}
+              </p>
+              <div class="lg:hidden flex flex-col gap-4 w-full">
+                <div class="border rounded-md p-4 flex flex-row justify-between gap-2 w-full"
+                  *ngFor="let app of memberTravelDocuments">
+                  <div class="flex flex-col justify-between">
+                    <p>
+                      {{ getTranslation(app.travelDocumentGuid) }}
+                    </p>
+                    <p>
+                      {{ app.passportNumber }}
+                    </p>
+                    <p>
+                      {{ formatDate(app.passportIssueDate) }} -
+                      {{ formatDate(app.passportValidityDate) }}
+                    </p>
+                  </div>
+                  <div class="rounded-lg flex items-center justify-center bg-gray-200 p-2 h-full cursor-pointer"
+                    (click)="setRemoveDocument(app.guid)" (keyPress)="setRemoveDocument(app.guid)">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M13.3333 5.00002V4.33335C13.3333 3.39993 13.3333 2.93322 13.1517 2.5767C12.9919 2.2631 12.7369 2.00813 12.4233 1.84834C12.0668 1.66669 11.6001 1.66669 10.6667 1.66669H9.33333C8.39991 1.66669 7.9332 1.66669 7.57668 1.84834C7.26308 2.00813 7.00811 2.2631 6.84832 2.5767C6.66667 2.93322 6.66667 3.39993 6.66667 4.33335V5.00002M8.33333 9.58335V13.75M11.6667 9.58335V13.75M2.5 5.00002H17.5M15.8333 5.00002V14.3334C15.8333 15.7335 15.8333 16.4336 15.5608 16.9683C15.3212 17.4387 14.9387 17.8212 14.4683 18.0609C13.9335 18.3334 13.2335 18.3334 11.8333 18.3334H8.16667C6.76654 18.3334 6.06647 18.3334 5.53169 18.0609C5.06129 17.8212 4.67883 17.4387 4.43915 16.9683C4.16667 16.4336 4.16667 15.7335 4.16667 14.3334V5.00002"
+                        stroke="#7A7A7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <table class="w-full border-separate hidden lg:block" *ngIf="memberTravelDocuments?.length > 0">
+                <tr>
+                  <th class="text-left text-[#282828] pr-2 pl-4 py-2 font-medium text-[14px] min-w-[150px] w-[400px]">
+                    {{ getInput("passportType")?.label }}
+                  </th>
+                  <th class="text-left text-[#282828] px-4 py-2 font-medium text-[14px] min-w-[150px] w-[400px]">
+                    {{ getInput("passportNumber")?.label }}
+                  </th>
+                  <th class="text-left text-[#282828] px-4 py-2 font-medium text-[14px] min-w-[130px] w-[400px]">
+                    {{ getInput("passportIssueDate")?.label }}
+                  </th>
+                  <th class="text-left text-[#282828] px-4 py-2 font-medium text-[14px] min-w-[130px] w-[400px]">
+                    {{ getInput("passportValidityDate")?.label }}
+                  </th>
+                  <th class="text-left text-[#282828] px-4 py-2 font-medium text-[14px] max-w-[50px]"></th>
+                </tr>
+                <tr *ngFor="let app of memberTravelDocuments" class="p-2 w-full">
+                  <td class="py-6 pl-4 pr-2 border-l border-t border-b rounded-l-md">
+                    {{ getTranslation(app.travelDocumentGuid) }}
+                  </td>
+                  <td class="py-6 p-4 border-t border-b">
+                    {{ app.passportNumber }}
+                  </td>
+                  <td class="py-6 p-4 border-t border-b">
+                    {{ formatDate(app.passportIssueDate) }}
+                  </td>
+                  <td class="py-6 p-4 border-t border-b">
+                    {{ formatDate(app.passportValidityDate) }}
+                  </td>
+                  <td class="py-6 pr-2 border-r border-t border-b rounded-r-md">
+                    <div class="rounded-lg flex items-center justify-center bg-gray-200 p-2 cursor-pointer"
+                      (click)="setRemoveDocument(app.guid)" (keyPress)="setRemoveDocument(app.guid)">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M13.3333 5.00002V4.33335C13.3333 3.39993 13.3333 2.93322 13.1517 2.5767C12.9919 2.2631 12.7369 2.00813 12.4233 1.84834C12.0668 1.66669 11.6001 1.66669 10.6667 1.66669H9.33333C8.39991 1.66669 7.9332 1.66669 7.57668 1.84834C7.26308 2.00813 7.00811 2.2631 6.84832 2.5767C6.66667 2.93322 6.66667 3.39993 6.66667 4.33335V5.00002M8.33333 9.58335V13.75M11.6667 9.58335V13.75M2.5 5.00002H17.5M15.8333 5.00002V14.3334C15.8333 15.7335 15.8333 16.4336 15.5608 16.9683C15.3212 17.4387 14.9387 17.8212 14.4683 18.0609C13.9335 18.3334 13.2335 18.3334 11.8333 18.3334H8.16667C6.76654 18.3334 6.06647 18.3334 5.53169 18.0609C5.06129 17.8212 4.67883 17.4387 4.43915 16.9683C4.16667 16.4336 4.16667 15.7335 4.16667 14.3334V5.00002"
+                          stroke="#7A7A7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<profile-update-success-modal [(visible)]="showUpdateSuccess" [detail]="detail"></profile-update-success-modal>
+<remove-modal [(visible)]="showRemove" (onDelete)="delete()" [detail]="removeDetail"></remove-modal>
+<remove-success-modal [(visible)]="showRemoveSuccess" [detail]="removeDetail"></remove-success-modal>
+<visa-result-error-modal [(visible)]="showErrorModal"></visa-result-error-modal>
+<visa-result-exempt-modal [(visible)]="showExemptModal" [conditions]="conditions"></visa-result-exempt-modal>

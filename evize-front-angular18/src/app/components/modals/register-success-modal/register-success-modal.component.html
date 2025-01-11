@@ -1,0 +1,65 @@
+<dialog
+  id="modal"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible"
+>
+  <div class="py-6 pl-6 pr-4 w-full max-h-screen max-w-[583px]">
+    <!-- Modal content -->
+    <div
+      class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl px-4 pt-4 pb-6"
+    >
+      <!-- Modal header -->
+      <div class="flex justify-center items-start pt-4">
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="4" y="4" width="48" height="48" rx="24" fill="#D1FADF" />
+          <rect
+            x="4"
+            y="4"
+            width="48"
+            height="48"
+            rx="24"
+            stroke="#ECFDF3"
+            stroke-width="8"
+          />
+          <g clip-path="url(#clip0_1936_18016)">
+            <path
+              d="M28 16C21.3835 16 16 21.3835 16 28C16 34.6165 21.3835 40 28 40C34.6165 40 40 34.6165 40 28C40 21.3835 34.6165 16 28 16ZM34.7068 24.8421L27.0376 32.4511C26.5865 32.9023 25.8647 32.9323 25.3835 32.4812L21.3233 28.782C20.8421 28.3308 20.812 27.5789 21.2331 27.0977C21.6842 26.6165 22.4361 26.5865 22.9173 27.0376L26.1353 29.985L32.9925 23.1278C33.4737 22.6466 34.2256 22.6466 34.7068 23.1278C35.188 23.609 35.188 24.3609 34.7068 24.8421Z"
+              fill="#039855"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_1936_18016">
+              <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(16 16)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Modal body -->
+      <div class="pt-4 overflow-auto flex flex-col gap-2 px-2 text-center">
+        <p class="" [innerHTML]="section?.popups?.success?.text"></p>
+      </div>
+      <div class="px-2 pt-8 pb-2 flex flex-row gap-3 items-center">
+        <button
+          class="w-full h-12 flex items-center justify-center bg-[#039855] rounded-xl cursor-pointer shadow-md text-white"
+          (click)="forgotPassword()"
+        >
+          {{ section?.popups?.success?.login }}
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>

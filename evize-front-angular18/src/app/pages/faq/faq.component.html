@@ -1,0 +1,84 @@
+<section class="bg-white px-4 pt-10 pb-10 justify-center flex w-full">
+  <div class="max-w-[1280px] flex flex-col gap-7 w-full">
+    <h1 class="font-semibold text-[#E34545] text-[20px] text-center">
+      {{ section?.heading }}
+    </h1>
+    <div
+      class="border rounded-full border-[#DCDCDC] flex flex-row items-center max-w-[500px] w-full self-center px-4 gap-4"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M21.7917 20.8035L16.1115 15.2141C17.599 13.5981 18.5129 11.4608 18.5129 9.10894C18.5122 4.07789 14.3683 0 9.25611 0C4.14393 0 0 4.07789 0 9.10894C0 14.14 4.14393 18.2179 9.25611 18.2179C11.4649 18.2179 13.4908 17.4539 15.0821 16.1837L20.7843 21.7952C21.0621 22.0689 21.5132 22.0689 21.7911 21.7952C22.0695 21.5215 22.0695 21.0772 21.7917 20.8035ZM9.25611 16.8164C4.93064 16.8164 1.42418 13.3657 1.42418 9.10894C1.42418 4.85221 4.93064 1.40146 9.25611 1.40146C13.5816 1.40146 17.088 4.85221 17.088 9.10894C17.088 13.3657 13.5816 16.8164 9.25611 16.8164Z"
+          fill="#CBCBCB"
+        />
+      </svg>
+
+      <input
+        [value]="filterText"
+        [(ngModel)]="filterText"
+        [ngModelOptions]="{ standalone: true }"
+        type="text"
+        (input)="filterContent()"
+        class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#1b1b1b] placeholder-[#BBBBBB] text-[14px] md:text-base h-[42px]"
+        [placeholder]="section?.searchPlaceholder"
+      />
+    </div>
+    <div class="flex flex-col gap-7">
+      <div class="flex flex-col gap-7 md:gap-14">
+        <div
+          class="flex flex-col gap-2"
+          *ngFor="let faq of filteredContent; index as i"
+        >
+          <div>
+            <button
+              type="button"
+              class="flex flex-row justify-between items-center gap-2 text-start w-full rounded-md"
+              (click)="setSelectedIndex(i)"
+            >
+              <p
+                class="text-[20px] font-semibold"
+                [innerHTML]="faq.question"
+              ></p>
+              <svg
+                class="shrink-0 self-start"
+                [class]="selectedIndex == i ? 'rotate-180' : ''"
+                width="24"
+                height="16"
+                viewBox="0 0 24 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.383707 3.97726L11.0738 14.6672C11.3208 14.9142 11.6502 15.0498 12.009 15.0498C12.3606 15.0498 12.6902 14.9142 12.9368 14.6672L23.617 3.98741C23.864 3.74019 24 3.41063 24 3.05902C24 2.70742 23.8642 2.37766 23.617 2.13064L22.8304 1.3441C22.5834 1.09708 22.2537 0.960691 21.9021 0.960691C21.5504 0.960691 21.2209 1.09708 20.9737 1.3441L12.0053 10.3125L3.02701 1.33376C2.77999 1.08694 2.45043 0.950741 2.09863 0.950741C1.74702 0.950741 1.41765 1.08694 1.17043 1.33376L0.383707 2.12069C-0.127901 2.63249 -0.127901 3.46546 0.383707 3.97726Z"
+                  fill="#424242"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="bg-[#FBFBFB] border border-[#ECECEC] p-6 max-w-screen overflow-x-auto"
+            (click)="selectedIndex = selectedIndex == i ? selectedIndex : i"
+            (keyPress)="selectedIndex = selectedIndex == i ? selectedIndex : i"
+          >
+            <div
+              [class]="selectedIndex != i ? 'line-clamp-2' : ''"
+              [innerHTML]="faq.answer | safeHtml"
+            ></div>
+          </div>
+        </div>
+        <div
+          class="bg-[#FBFBFB] p-6 text-center"
+          *ngIf="filterText != '' && filteredContent.length == 0"
+        >
+          {{ section?.noResults }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

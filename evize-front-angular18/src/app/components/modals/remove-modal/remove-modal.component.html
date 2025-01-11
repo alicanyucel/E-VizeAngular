@@ -1,0 +1,83 @@
+<dialog
+  id="modal"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  class="overflow-y-auto overscroll-none fixed top-1/2 -translate-y-1/2 right-0 z-40 w-screen h-screen bg-white backdrop-blur-md bg-opacity-25 flex justify-center items-center"
+  *ngIf="visible"
+>
+  <div class="py-6 pl-6 pr-4 w-full max-h-screen max-w-[583px]">
+    <!-- Modal content -->
+    <div
+      class="relative bg-white shadow-lg border border-[#e5e5e5] rounded-3xl px-4 pt-4 pb-6"
+    >
+      <!-- Modal header -->
+      <div class="flex justify-center pt-4 items-start">
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="4" y="4" width="48" height="48" rx="24" fill="#FEE4E2" />
+          <rect
+            x="4"
+            y="4"
+            width="48"
+            height="48"
+            rx="24"
+            stroke="#FEF3F2"
+            stroke-width="8"
+          />
+          <g clip-path="url(#clip0_1922_17907)">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M17.67 20.1072H18.9756V36.5513C18.9756 38.4529 20.5228 40 22.4241 40H33.4635C35.3649 40 36.9123 38.4529 36.9123 36.5513V20.1072H38.3298C38.6404 20.1072 38.8921 19.8554 38.8921 19.5447C38.8921 19.234 38.6404 18.9822 38.3298 18.9822H31.357V17.5219C31.357 16.6826 30.6742 15.9998 29.835 15.9998H26.1649C25.3256 15.9998 24.6428 16.6825 24.6428 17.5219V18.9822H17.67C17.3593 18.9822 17.1074 19.234 17.1074 19.5447C17.1074 19.8554 17.3593 20.1072 17.67 20.1072ZM25.7679 17.5219C25.7679 17.3065 25.9496 17.1248 26.165 17.1248H29.8351C30.054 17.1248 30.232 17.303 30.232 17.5219V18.9822H25.7679V17.5219ZM23.1783 34.6691V24.8563C23.1783 24.5456 23.4304 24.2938 23.7409 24.2938C24.0515 24.2938 24.3034 24.5456 24.3034 24.8563V34.6692C24.3034 34.9798 24.0515 35.2317 23.7409 35.2317C23.4304 35.2317 23.1783 34.9798 23.1783 34.6691ZM27.3813 34.6691V24.8563C27.3813 24.5456 27.6332 24.2938 27.9438 24.2938C28.2545 24.2938 28.5063 24.5456 28.5063 24.8563V34.6692C28.5063 34.9798 28.2544 35.2317 27.9438 35.2317C27.6332 35.2317 27.3813 34.9798 27.3813 34.6691ZM31.5841 34.6691V24.8563C31.5841 24.5456 31.8361 24.2938 32.1463 24.2938C32.4572 24.2938 32.7088 24.5456 32.7088 24.8563V34.6692C32.7088 34.9798 32.4572 35.2317 32.1463 35.2317C31.8361 35.2317 31.5841 34.9798 31.5841 34.6691Z"
+              fill="#D92D20"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_1922_17907">
+              <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(16 16)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Modal body -->
+      <div class="pt-4 overflow-auto flex flex-col gap-2 px-2 text-center">
+        <p class="text-[#475467] font-semibold text-[18px]">
+          {{ getInput("areYouSureToDelete") }}
+        </p>
+        <p class="text-[#475467]">
+          {{ detail }}
+        </p>
+
+        <p class="text-[#475467]">
+          {{ getInput("cannotRevert") }}
+        </p>
+      </div>
+      <div class="px-2 pt-8 pb-2 flex flex-row gap-3 items-center">
+        <button
+          class="w-full h-12 flex items-center justify-center border border-[#D0D5DD] rounded-xl cursor-pointer shadow-md hover:border-[#333]"
+          (click)="toggle()"
+        >
+          {{ getInput("cancel") }}
+        </button>
+
+        <button
+          class="w-full h-12 flex items-center justify-center bg-[#D92D20] rounded-xl cursor-pointer shadow-md text-white"
+          (click)="delete()"
+        >
+          {{ getInput("delete") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>

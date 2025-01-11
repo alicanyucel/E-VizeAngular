@@ -1,0 +1,46 @@
+<div class="overflow-hidden relative min-h-[200px] h-full max-h-screen bg-white">
+  <div class="w-full h-full min-h-[600px] max-h-[800px]">
+    <img *ngIf="section?.asset" [ngSrc]="
+        environment.apiUrl +
+        '/file/get?mimeType=image/jpeg&fileName=' +
+        section?.asset
+      " class="h-full w-full object-cover object-center min-h-[600px]" width="1920" height="1153" priority
+      alt="e-Visa" />
+  </div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[600px] w-full px-6">
+    <form
+      class="flex flex-col items-center justify-center gap-6 bg-[#fff] px-8 sm:px-16 py-8 sm:py-12 bg-opacity-80 rounded-md backdrop-blur-[25px]"
+      (ngSubmit)="submit()">
+      <p class="text-[20px] font-medium">{{ section?.heading }}</p>
+
+      <div class="w-full">
+        <text-input [max]="100" key="email" [(value)]="defaultAuth.email" [(error)]="errors.email" [required]="true"
+          mode="light"></text-input>
+      </div>
+      <div class="w-full">
+        <password-input [(value)]="defaultAuth.password" key="password" [(error)]="errors.password" [required]="true"
+          [light]="true"></password-input>
+      </div>
+
+      <div class="w-full flex flex-row justify-end max-w-[624px]">
+        <a class="font-medium text-[14px] text-[#E34545]" routerLink="/reset-password">
+          {{ section?.forgotPassword }}
+        </a>
+      </div>
+
+      <div class="flex flex-col gap-5 max-w-[624px] w-full pb-4">
+        <button class="flex flex-row gap-4 items-center bg-[#E34545] rounded-md py-4 w-full justify-center"
+          (click)="submit()">
+          <p class="font-medium text-white">{{ section?.button }}</p>
+        </button>
+        <p class="font-medium text-[14px] text-center">
+          {{ section?.notRegistered?.text }} <a class="underline font-bold" routerLink="/register">{{
+            section?.notRegistered?.register }}</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+<login-error-modal [(visible)]="loginErrorModal" [error]="error"></login-error-modal>
+<missing-information-modal [(visible)]="showMissingInformation" [errors]="missingErrors"></missing-information-modal>
+<user-verified-modal [(visible)]="showVerifiedModal"></user-verified-modal>

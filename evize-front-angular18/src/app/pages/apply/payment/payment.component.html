@@ -1,0 +1,401 @@
+<section class="bg-white px-4 py-7">
+  <div class="flex justify-center w-full">
+    <div class="w-full max-w-[1280px] flex flex-col gap-6 md:gap-14">
+      <div class="flex flex-col gap-4">
+        <p class="font-medium text-[#9F161D] text-center">
+          {{ section?.steps?.title }}
+        </p>
+        <app-application-status-bar [step]="5"></app-application-status-bar>
+      </div>
+
+      <div class="flex flex-col xl:flex-row gap-6 md:gap-14">
+        <div
+          class="bg-[#E34545]/20 px-7 py-8 bg-opacity-20 rounded-xl shadow-lg flex flex-col gap-4 h-fit w-full xl:max-w-[350px] xl:order-last">
+          <p class="text-[#2B2B2B] font-semibold text-center">
+            {{ section?.payment?.notes?.label }}
+          </p>
+          <div class="flex flex-row gap-1.5" *ngFor="let note of getNotes()">
+            <svg width="8" class="shrink-0 mt-1" height="8" viewBox="0 0 8 8" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect width="8" height="8" rx="4" fill="#2B2B2B" />
+            </svg>
+            <p class="text-[12px]">
+              {{ note[""] }}
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-9">
+          <div class="w-full flex flex-col gap-7">
+            <div
+              class="bg-[#FAFAFA] border border-[#E1E1E1] rounded-lg py-6 px-10 gap-10 flex lg:flex-row w-full lg:w-fit flex-col lg:flex-wrap justify-center">
+              <div class="flex flex-col gap-2">
+                <p class="font-medium text-[14px] text-center">
+                  {{ section?.payment?.visaPrice }}
+                </p>
+                <div class="text-center flex flex-col items-center">
+                  <span class="font-bold text-[20px]">{{ getPrice() }}</span>
+                  <span class="text-[14px] text-center">
+                    {{ getPriceDetail() }}
+                  </span>
+                </div>
+              </div>
+              <svg class="hidden lg:flex h-full" width="1" height="65" viewBox="0 0 1 65" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <line x1="0.5" y1="2.18558e-08" x2="0.499997" y2="65" stroke="#EDEDED" />
+              </svg>
+              <div class="flex flex-col gap-2">
+                <p class="font-medium text-[14px] text-center">
+                  {{ section?.payment?.transactionFee }}
+                </p>
+                <p class="font-bold text-[20px] text-center">
+                  {{ getFee() }}
+                </p>
+              </div>
+              <svg class="hidden lg:flex h-full" width="1" height="65" viewBox="0 0 1 65" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <line x1="0.5" y1="2.18558e-08" x2="0.499997" y2="65" stroke="#EDEDED" />
+              </svg>
+              <div class="flex flex-col gap-2">
+                <p class="font-medium text-[14px] text-center">
+                  {{ getInput("admitFee") }}
+                </p>
+                <p class="font-bold text-[20px] text-center">
+                  {{ getAdmitFee() }}
+                </p>
+              </div>
+              <svg class="hidden lg:flex h-full" width="1" height="65" viewBox="0 0 1 65" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <line x1="0.5" y1="2.18558e-08" x2="0.499997" y2="65" stroke="#EDEDED" />
+              </svg>
+              <div class="flex flex-col gap-2 text-[#39AF00]">
+                <p class="font-medium text-[14px] text-center">
+                  {{ section?.payment?.totalPrice }}
+                </p>
+                <p class="font-bold text-[20px] text-center">
+                  {{ getTotal() }}
+                </p>
+              </div>
+            </div>
+            <div class="w-full flex flex-col gap-7">
+              <div class="flex flex-col gap-2">
+                <div
+                  class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]"
+                  (click)="
+                    selectedIndex == 0
+                      ? (selectedIndex = -1)
+                      : setSelectedIndex(0)
+                  " (keyPress)="
+                    selectedIndex == 0
+                      ? (selectedIndex = -1)
+                      : setSelectedIndex(0)
+                  ">
+                  <p class="text-[14px] font-medium flex flex-row gap-4 flex-wrap items-center text-[#6B6B6B]">
+                    {{ section?.payment?.creditCard }}
+                    <img src="/images/payment-methods/visa.png" class="h-5" alt="Visa" />
+                    <img src="/images/payment-methods/mastercard.png" class="h-5" alt="mastercard" />
+                    <img src="/images/payment-methods/amex.png" class="h-5" alt="American Express" />
+                    <img src="/images/payment-methods/jcb.png" class="h-5" alt="JCB" />
+                    <img src="/images/payment-methods/diners-club.png" class="h-5" alt="DC" />
+                    <img src="/images/payment-methods/discover.png" class="h-5" alt="Discover" />
+                    <img src="/images/payment-methods/cb.png" class="h-5" alt="CB" />
+                  </p>
+                  <svg class="shrink-0" [class]="
+                      selectedIndex == 0 ? 'rotate-180' : 'text-[#A4A4A4]'
+                    " width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1095_40122)">
+                      <path
+                        d="M0 14C0 6.2802 6.28087 0 14 0C21.7191 0 28 6.2802 28 14C28 21.7199 21.7191 28.0001 14 28.0001C6.28081 28.0001 0 21.7199 0 14ZM7.41014 13.5899L13.0102 19.1898C13.5571 19.7367 14.443 19.7367 14.9898 19.1898L20.5899 13.5899C21.1368 13.043 21.1368 12.157 20.5899 11.6102C20.043 11.0634 19.157 11.0633 18.6102 11.6102L14 16.2204L9.38987 11.6102C8.84298 11.0633 7.95703 11.0633 7.4102 11.6102C7.13678 11.8836 7.00004 12.2418 7.00004 12.6001C6.99999 12.9582 7.13672 13.3164 7.41014 13.5899Z"
+                        fill="currentColor" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1095_40122">
+                        <rect width="28" height="28" fill="white" transform="matrix(0 1 -1 0 28 0)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div *ngIf="selectedIndex == 0" class="flex flex-col gap-5">
+                  <div class="w-full">
+                    <text-input [(value)]="cardNumber" key="cardNumber" [(error)]="errors.cardNumber"
+                      [required]="true"></text-input>
+                  </div>
+
+                  <div class="flex flex-col gap-6 md:flex-row">
+                    <div class="flex flex-col gap-2 pt-2 w-full">
+                      <p class="font-medium">
+                        {{ section?.payment?.cardExpiration
+                        }}<span class="text-[#E34545]">*</span>
+                      </p>
+                      <div class="border rounded-md px-2 flex flex-row gap-2 items-center" [class]="
+                          errors.skt == ''
+                            ? 'border-[#DDDDDD]'
+                            : ' border-[#E34545]'
+                        ">
+                        <ng-select class="w-full" [clearable]="false" [searchable]="true" [(ngModel)]="cardExpiryMonth"
+                          [ngModelOptions]="{ standalone: true }" placeholder="MM" (change)="errors.skt = ''">
+                          <ng-option *ngFor="let c of months" [value]="c">
+                            {{ c }}
+                          </ng-option>
+                        </ng-select>
+
+                        <p>/</p>
+
+                        <ng-select class="w-full" [clearable]="false" [searchable]="true" [(ngModel)]="cardExpiryYear"
+                          [ngModelOptions]="{ standalone: true }" placeholder="YY" (change)="errors.skt = ''">
+                          <ng-option *ngFor="let c of years" [value]="c">
+                            {{ c }}
+                          </ng-option>
+                        </ng-select>
+                      </div>
+                      <p *ngIf="errors.skt != ''" class="text-[#E34545] text-[14px] text-start error">
+                        {{ getErrorMessage(errors.skt) }}
+                      </p>
+                    </div>
+                    <div class="w-full">
+                      <text-input [(value)]="cvv" key="cvv" [(error)]="errors.cvv" [required]="true"></text-input>
+                    </div>
+                  </div>
+                  <div class="bg-[#E7E7E7] rounded-md w-full py-2 px-4" *ngIf="cardError">
+                    <p class="font-medium text-[10px] text-start text-[#FF0000]">
+                      {{ section?.payment?.fillRequiredFields }}
+                    </p>
+                  </div>
+
+                  <button
+                    class="flex flex-row gap-4 items-center rounded-md py-4 min-w-[200px] w-full md:w-fit justify-center self-end transition duration-300 bg-[#E31F26]"
+                    (click)="submitPay('CC')">
+                    <p class="font-medium text-white">
+                      {{ section?.payment?.pay }}
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]">
+                <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                  UnionPay
+                  <img src="/images/payment-methods/unionpay.png" class="h-5" alt="Union Pay" />
+                </div>
+                <p class="font-medium text-[#39AF00]" (click)="submitPay('UPAY')" (keyPress)="submitPay('UPAY')">
+                  {{ section?.payment?.pay }}
+                </p>
+              </div>
+              <div
+                class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]">
+                <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                  Ideal
+                  <img src="/images/payment-methods/ideal.png" class="h-5" alt="Ideal" />
+                </div>
+                <p class="font-medium text-[#39AF00]" (click)="submitPay('GIROGATE_IDEAL')"
+                  (keyPress)="submitPay('GIROGATE_IDEAL')">
+                  {{ section?.payment?.pay }}
+                </p>
+              </div>
+
+              <div
+                class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]">
+                <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                  Alipay
+                  <img src="/images/payment-methods/alipay.png" class="h-5" alt="Alipay" />
+                </div>
+                <p class="font-medium text-[#39AF00]" (keyPress)="submitPay('GIROGATE_ALIPAY')"
+                  (click)="submitPay('GIROGATE_ALIPAY')">
+                  {{ section?.payment?.pay }}
+                </p>
+              </div>
+              <div
+                class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]">
+                <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                  Eps
+                  <img src="/images/payment-methods/eps.png" class="h-5" alt="Eps" />
+                </div>
+                <p class="font-medium text-[#39AF00]" (click)="submitPay('GIROGATE_EPS')"
+                  (keyPress)="submitPay('GIROGATE_EPS')">
+                  {{ section?.payment?.pay }}
+                </p>
+              </div>
+
+              <div
+                class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]">
+                <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                  Bancontact
+                  <img src="/images/payment-methods/bancontact.png" class="h-5" alt="Bancontact" />
+                </div>
+                <p class="font-medium text-[#39AF00]" (click)="submitPay('GIROGATE_BANCONTACT')"
+                  (keyPress)="submitPay('GIROGATE_BANCONTACT')">
+                  {{ section?.payment?.pay }}
+                </p>
+              </div>
+              <div
+                class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]">
+                <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                  P24
+                  <img src="/images/payment-methods/przelewy.png" class="h-5" alt="P24" />
+                </div>
+                <p class="font-medium text-[#39AF00]" (click)="submitPay('GIROGATE_P24')"
+                  (keyPress)="submitPay('GIROGATE_P24')">
+                  {{ section?.payment?.pay }}
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div
+                  class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]"
+                  (click)="
+                    selectedIndex == 3
+                      ? (selectedIndex = -1)
+                      : setSelectedIndex(3);
+                    ccode = null
+                  " (keyPress)="
+                    selectedIndex == 3
+                      ? (selectedIndex = -1)
+                      : setSelectedIndex(3);
+                    ccode = null
+                  ">
+                  <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                    Sofort
+                    <img src="/images/payment-methods/sofort.png" class="h-5" alt="Sofort" />
+                  </div>
+
+                  <svg [class]="
+                      selectedIndex == 3 ? 'rotate-180' : 'text-[#A4A4A4]'
+                    " width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1095_40122)">
+                      <path
+                        d="M0 14C0 6.2802 6.28087 0 14 0C21.7191 0 28 6.2802 28 14C28 21.7199 21.7191 28.0001 14 28.0001C6.28081 28.0001 0 21.7199 0 14ZM7.41014 13.5899L13.0102 19.1898C13.5571 19.7367 14.443 19.7367 14.9898 19.1898L20.5899 13.5899C21.1368 13.043 21.1368 12.157 20.5899 11.6102C20.043 11.0634 19.157 11.0633 18.6102 11.6102L14 16.2204L9.38987 11.6102C8.84298 11.0633 7.95703 11.0633 7.4102 11.6102C7.13678 11.8836 7.00004 12.2418 7.00004 12.6001C6.99999 12.9582 7.13672 13.3164 7.41014 13.5899Z"
+                        fill="currentColor" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1095_40122">
+                        <rect width="28" height="28" fill="white" transform="matrix(0 1 -1 0 28 0)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div *ngIf="selectedIndex == 3" class="flex flex-col md:flex-row items-center justify-center gap-5">
+                  <div class="flex flex-col gap-2 pt-2 w-full md:max-w-[370px]">
+                    <p class="font-medium">
+                      {{ section?.payment?.country?.label
+                      }}<span class="text-[#E34545]">*</span>
+                    </p>
+                    <div class="border rounded-md" [class]="
+                        ccode == null
+                          ? 'border-[#DDDDDD]'
+                          : 'border-[#39AF00] text-[#39AF00]'
+                      ">
+                      <ng-select
+                        class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full"
+                        [clearable]="false" [searchable]="false" [(ngModel)]="ccode"
+                        [ngModelOptions]="{ standalone: true }" [placeholder]="
+                          section?.payment?.country?.placeholder ?? ''
+                        ">
+                        <ng-option value="CZ">Czech Republic</ng-option>
+                        <ng-option value="PL">Poland</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <button
+                    class="flex flex-row gap-4 items-center rounded-md h-[50px] min-w-[200px] w-full md:w-fit justify-center self-end transition duration-300"
+                    [class]="ccode == null ? 'bg-[#A3A3A3]' : 'bg-[#39AF00]'" (click)="submitPay('GIROGATE_SOFORT')">
+                    <p class="font-medium text-white">
+                      {{ section?.payment?.pay }}
+                    </p>
+                  </button>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div
+                  class="py-4 px-5 md:px-9 flex flex-row justify-between items-center rounded-md cursor-pointer select-none bg-[#F1F1F1]"
+                  (click)="
+                    selectedIndex == 2
+                      ? (selectedIndex = -1)
+                      : setSelectedIndex(2);
+                    ccode = null
+                  " (keyPress)="
+                    selectedIndex == 2
+                      ? (selectedIndex = -1)
+                      : setSelectedIndex(2);
+                    ccode = null
+                  ">
+                  <div class="text-[14px] font-medium text-[#6B6B6B] flex flex-row gap-2 items-center">
+                    PayU
+                    <img src="/images/payment-methods/payu.png" class="h-5" alt="PayU" />
+                  </div>
+
+                  <svg [class]="
+                      selectedIndex == 2 ? 'rotate-180' : 'text-[#A4A4A4]'
+                    " width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1095_40122)">
+                      <path
+                        d="M0 14C0 6.2802 6.28087 0 14 0C21.7191 0 28 6.2802 28 14C28 21.7199 21.7191 28.0001 14 28.0001C6.28081 28.0001 0 21.7199 0 14ZM7.41014 13.5899L13.0102 19.1898C13.5571 19.7367 14.443 19.7367 14.9898 19.1898L20.5899 13.5899C21.1368 13.043 21.1368 12.157 20.5899 11.6102C20.043 11.0634 19.157 11.0633 18.6102 11.6102L14 16.2204L9.38987 11.6102C8.84298 11.0633 7.95703 11.0633 7.4102 11.6102C7.13678 11.8836 7.00004 12.2418 7.00004 12.6001C6.99999 12.9582 7.13672 13.3164 7.41014 13.5899Z"
+                        fill="currentColor" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1095_40122">
+                        <rect width="28" height="28" fill="white" transform="matrix(0 1 -1 0 28 0)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div *ngIf="selectedIndex == 2" class="flex flex-col md:flex-row items-center justify-center gap-5">
+                  <div class="flex flex-col gap-2 pt-2 w-full md:max-w-[370px]">
+                    <p class="font-medium">
+                      {{ section?.payment?.country?.label
+                      }}<span class="text-[#E34545]">*</span>
+                    </p>
+                    <div class="border rounded-md" [class]="
+                        ccode == null
+                          ? 'border-[#DDDDDD]'
+                          : 'border-[#39AF00] text-[#39AF00]'
+                      ">
+                      <ng-select
+                        class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full"
+                        [clearable]="false" [searchable]="false" [(ngModel)]="ccode"
+                        [ngModelOptions]="{ standalone: true }" [placeholder]="
+                          section?.payment?.country?.placeholder ?? ''
+                        ">
+                        <ng-option value="AT">Austria</ng-option>
+                        <ng-option value="BE">Belgium</ng-option>
+                        <ng-option value="DE">Germany</ng-option>
+                        <ng-option value="IT">Italy</ng-option>
+                        <ng-option value="NL">Netherlands</ng-option>
+                        <ng-option value="PL">Poland</ng-option>
+                        <ng-option value="ES">Spain</ng-option>
+                        <ng-option value="CH">Switzerland</ng-option>
+                        <ng-option value="UK">United Kingdom</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <button
+                    class="flex flex-row gap-4 items-center rounded-md h-[50px] min-w-[200px] w-full md:w-fit justify-center self-end transition duration-300"
+                    [class]="ccode == null ? 'bg-[#A3A3A3]' : 'bg-[#39AF00]'" (click)="submitPay('GIROGATE_PAYU')">
+                    <p class="font-medium text-white">
+                      {{ section?.payment?.pay }}
+                    </p>
+                  </button>
+                </div>
+                <div class="flex flex-row gap-4 self-end pt-4">
+                  <button
+                    class="flex flex-row gap-4 items-center border border-[#E34545] rounded-md py-3 min-w-[120px] w-full md:w-fit justify-center"
+                    (click)="back()">
+                    <p class="font-medium text-[#E34545]">
+                      {{ section?.conditions?.back }}
+                    </p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<form id="payform" method="post" [innerHTML]="payFormContent" action="https://istest.asseco-see.com.tr/fim/est3Dgate">
+</form>
+
+<payment-success-modal [(visible)]="visaSuccess"></payment-success-modal>
+<payment-error-modal [(visible)]="visaError" [paymentError]="paymentError"></payment-error-modal>
+<visa-add-error-modal [(visible)]="visaAddError" [errors]="visaAddErrors"></visa-add-error-modal>

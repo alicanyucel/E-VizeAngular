@@ -1,0 +1,275 @@
+<section class="bg-white px-4 py-7">
+  <div class="flex justify-center w-full">
+    <div class="w-full max-w-[1280px] flex flex-col gap-6 md:gap-14">
+      <div class="flex flex-col gap-4">
+        <p class="font-medium text-[#E34545] text-center">
+          {{ section?.steps?.title }}
+        </p>
+        <app-application-status-bar [step]="1"></app-application-status-bar>
+      </div>
+      <div class="flex flex-col xl:flex-row gap-6 md:gap-14">
+        <div
+          class="bg-[#E34545]/20 px-7 py-8 bg-opacity-20 rounded-xl shadow-lg flex flex-col gap-4 h-fit w-full xl:max-w-[350px] xl:order-last">
+          <p class="text-[#2B2B2B] font-semibold text-center">
+            {{ section?.visaType?.notes?.label }}
+          </p>
+          <div class="flex flex-row gap-1.5" *ngFor="let note of getNotes()">
+            <svg width="8" class="shrink-0 mt-1" height="8" viewBox="0 0 8 8" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect width="8" height="8" rx="4" fill="#2B2B2B" />
+            </svg>
+            <p class="text-[12px]">
+              {{ note[""] }}
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-6">
+          <div class="flex flex-col gap-2 w-full">
+            <p class="font-medium" [class]="errors.visaTypeId != '' ? 'text-[#E34545]' : ''">
+              {{ getInput("visaType")?.label
+              }}<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border rounded-md" [class]="
+                errors.visaTypeId == ''
+                  ? 'border-[#DDDDDD]'
+                  : ' border-[#E34545]'
+              ">
+              <ng-select
+                class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E]"
+                [clearable]="false" [searchable]="true" [(ngModel)]="visaTypeId" [ngModelOptions]="{ standalone: true }"
+                (change)="selectModel()" [placeholder]="getInput('visaType')?.label">
+                <ng-option value="1">{{ getVisaType("E-Vize") }}</ng-option>
+                <ng-option value="2" *ngIf="canApplyTransit">{{
+                  getVisaType("Havaalanı Transit Vize")
+                  }}</ng-option>
+              </ng-select>
+            </div>
+            <p *ngIf="errors.visaTypeId != ''" class="text-[#E34545] text-[14px] text-start error">
+              {{ getErrorMessage(errors.visaTypeId) }}
+            </p>
+          </div>
+          <div class="flex flex-col gap-2 pt-2 w-full" *ngIf="visaTypeId">
+            <p class="font-medium" [class]="errors.travelDocumentGuid != '' ? 'text-[#E34545]' : ''">
+              {{ getInput("travelDocument")
+              }}<span class="text-[#E34545]">*</span>
+            </p>
+            <div class="border rounded-md" [class]="
+                errors.travelDocumentGuid == ''
+                  ? 'border-[#DDDDDD]'
+                  : ' border-[#E34545]'
+              ">
+              <ng-select [clearable]="false" [searchable]="true" [(ngModel)]="application.travelDocumentGuid"
+                [ngModelOptions]="{ standalone: true }" (change)="errors.travelDocumentGuid = ''"
+                [placeholder]="getInput('travelDocument')">
+                <ng-option *ngFor="let k of getMemberTravelDocuments()" [value]="k.guid">
+                  {{ getTranslation(k.travelDocumentGuid) }} /
+                  {{ k.passportNumber }} /
+                  {{ formatDate(k.passportValidityDate) }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <p *ngIf="errors.travelDocumentGuid != ''" class="text-[#E34545] text-[14px] text-start error">
+              {{ getErrorMessage(errors.travelDocumentGuid) }}
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-6" *ngIf="visaTypeId == 2">
+            <div class="flex flex-col gap-6 md:flex-row">
+              <div class="flex flex-col gap-2 pt-2 w-full">
+                <p class="font-medium" [class]="
+                    errors.transitDestinationCountryGuid != ''
+                      ? 'text-[#E34545]'
+                      : ''
+                  ">
+                  {{ getInput("targetCountry")?.label
+                  }}<span class="text-[#E34545]">*</span>
+                </p>
+                <div class="border rounded-md" [class]="
+                    errors.transitDestinationCountryGuid == ''
+                      ? 'border-[#DDDDDD]'
+                      : ' border-[#E34545]'
+                  ">
+                  <ng-select
+                    class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E]"
+                    [clearable]="false" [searchable]="true" [(ngModel)]="application.transitDestinationCountryGuid"
+                    [ngModelOptions]="{ standalone: true }" (change)="errors.transitDestinationCountryGuid = ''"
+                    [placeholder]="getInput('targetCountry')?.placeholder">
+                    <ng-option *ngFor="let c of translatedDestinationCountries" [value]="c.guid">
+                      {{ c.name }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <p *ngIf="errors.transitDestinationCountryGuid != ''"
+                  class="text-[#E34545] text-[14px] text-start error">
+                  {{ getErrorMessage(errors.transitDestinationCountryGuid) }}
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-6 md:flex-row">
+              <div class="w-full">
+                <date-input [(value)]="application.entryDate" key="arrivalDate" [(error)]="errors.arrivalDate"
+                  [minDate]="minArrivalDate" [required]="true"></date-input>
+              </div>
+            </div>
+            <div class="flex flex-col gap-6 md:flex-row">
+              <div class="flex flex-col gap-2 pt-2 w-full">
+                <p class="font-medium" [class]="
+                    errors.flightInformation != '' ? 'text-[#E34545]' : ''
+                  ">
+                  {{ getInput("flightInformation")?.label
+                  }}<span class="text-[#E34545]">*</span>
+                </p>
+                <div class="border rounded-md" [class]="
+                    errors.flightInformation == ''
+                      ? 'border-[#DDDDDD]'
+                      : ' border-[#E34545]'
+                  ">
+                  <ng-select
+                    class="border-transparent focus:border-transparent focus:!ring-0 focus:outline-none w-full text-[#6E6E6E]"
+                    [clearable]="false" [searchable]="true" [(ngModel)]="application.flightInformation"
+                    (change)="errors.flightInformation = ''" [ngModelOptions]="{ standalone: true }"
+                    [placeholder]="getInput('flightInformation')?.placeholder">
+                    <ng-option value="1">{{
+                      getFlightInformation("Bilet Numarası")
+                      }}</ng-option>
+                    <ng-option value="2">{{
+                      getFlightInformation("Rezervasyon Numarası")
+                      }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 w-full" *ngIf="application.flightInformation == '1'">
+                <text-input [(value)]="application.ticketNumber" key="ticketInformation" [(error)]="errors.ticketNumber"
+                  [required]="true" [max]="15"></text-input>
+              </div>
+              <div class="flex flex-col gap-2 w-full" *ngIf="application.flightInformation == '2'">
+                <text-input [(value)]="application.ticketReservationNumber" key="reservationNumber"
+                  [(error)]="errors.ticketReservationNumber" [required]="true" [max]="15"></text-input>
+              </div>
+            </div>
+
+            <text-input [(value)]="application.arrivalDestinationAddress" key="destinationAddress"
+              [(error)]="errors.address" [required]="true" [max]="150"></text-input>
+          </div>
+          <date-input *ngIf="visaTypeId == 1" [(value)]="application.entryDate" key="arrivalDate"
+            [(error)]="errors.arrivalDate" [minDate]="minArrivalDate" [required]="true"></date-input>
+
+          <div class="flex flex-row gap-2 items-center" *ngIf="eligible == true">
+            <input type="checkbox" name="aggreement" value="false" id="aggreement" (change)="setAggreement()" />
+            <p for="aggreement" class="text-[#1b1b1b] font-medium text-[12px]"
+              [innerHTML]="section?.visaType?.checkbox"></p>
+          </div>
+          <div class="bg-[#E7E7E7] rounded-md w-full py-2 px-4" *ngIf="error == true && eligible != false">
+            <p class="font-medium text-[10px] text-[#FF0000]">
+              {{ section?.visaType?.fillRequiredFields }}
+            </p>
+          </div>
+          <div id="eligibleStatus"
+            class="bg-[#F3F3F3] border rounded-md border-[#E1E1E1] py-3 px-3 flex flex-col lg:flex-row gap-4 lg:gap-8 items-center justify-center"
+            *ngIf="eligible == false">
+            <p class="font-medium" [innerHTML]="section?.visaType?.notSuitable"></p>
+          </div>
+
+          <button
+            class="flex flex-row gap-4 items-center rounded-md py-4 min-w-[200px] w-full md:w-fit justify-center self-end transition duration-300 bg-[#E34545]"
+            (click)="nextStep()">
+            <p class="font-medium text-white">
+              {{ section?.visaType?.button }}
+            </p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="z-40 fixed top-0 left-0 w-full h-full !outline-none overflow-x-hidden overflow-y-auto p-4 backdrop-blur-sm"
+  *ngIf="popup">
+  <div class="sm:h-[calc(100%-3rem)] md:max-w-[700px] my-6 mx-auto relative w-auto pointer-events-none">
+    <div
+      class="max-h-full overflow-hidden border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md !outline-none text-current">
+      <div class="flex flex-shrink-0 items-center justify-between p-4 rounded-t-md">
+        <div class="absolute right-4 top-4">
+          <p class="font-semibold text-[24px] justify-end text-end cursor-pointer" (click)="togglePopup()"
+            (keyPress)="togglePopup()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip0_1249_17861)">
+                <path
+                  d="M0.170703 1.00109C-0.0542969 0.776093 -0.0542969 0.401617 0.170703 0.16875C0.40357 -0.05625 0.770179 -0.05625 1.00305 0.16875L5.99763 5.17172L11.0006 0.16875C11.2256 -0.05625 11.6001 -0.05625 11.8245 0.16875C12.0574 0.401617 12.0574 0.776617 11.8245 1.00109L6.82997 5.9962L11.8245 10.9992C12.0574 11.2242 12.0574 11.5986 11.8245 11.8315C11.5995 12.0565 11.2251 12.0565 11.0006 11.8315L5.99763 6.82854L1.00305 11.8315C0.770179 12.0565 0.40357 12.0565 0.170703 11.8315C-0.0542969 11.5986 -0.0542969 11.2236 0.170703 10.9992L5.16528 5.9962L0.170703 1.00109Z"
+                  fill="#1E201D" />
+              </g>
+              <defs>
+                <clipPath id="clip0_1249_17861">
+                  <rect width="12" height="12" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+          </p>
+        </div>
+      </div>
+      <div class="flex-auto overflow-y-auto relative p-4">
+        <div class="flex flex-col gap-6 items-center justify-center p-4">
+          <svg class="shrink-0 w-5 h-5" width="16" height="16" viewBox="0 0 16 16" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M8 0C3.57841 0 0 3.578 0 8C0 12.4215 3.578 16 8 16C12.4216 16 16 12.422 16 8C16 3.57847 12.422 0 8 0ZM8.82153 11.1757C8.82153 11.4284 8.45297 11.6811 8.00016 11.6811C7.52628 11.6811 7.18934 11.4284 7.18934 11.1757V7.16356C7.18934 6.86872 7.52631 6.66859 8.00016 6.66859C8.45297 6.66859 8.82153 6.86872 8.82153 7.16356V11.1757ZM8.00019 5.69987C7.51578 5.69987 7.13672 5.34184 7.13672 4.94166C7.13672 4.5415 7.51581 4.194 8.00019 4.194C8.47406 4.194 8.85319 4.5415 8.85319 4.94166C8.85319 5.34184 8.47403 5.69987 8.00019 5.69987Z"
+              fill="#0079BE" />
+          </svg>
+          <div class="flex flex-col gap-3 w-full" *ngIf="visaTypeId == 1">
+            <p class="font-semibold text-[#060606] text-center text-[20px]">
+              {{ section?.visaType?.evisaAggreement?.title }}
+            </p>
+            <div class="flex flex-row gap-2 text-start w-full"
+              *ngFor="let item of section?.visaType?.evisaAggreement?.items">
+              <svg class="shrink-0 mt-2" width="8" height="8" viewBox="0 0 8 8" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="8" height="8" rx="4" fill="#0079BE" />
+                <rect x="2" y="2" width="4" height="4" rx="2" fill="#F7F7F7" />
+              </svg>
+              <span [innerHTML]="item['']"></span>
+            </div>
+            <button
+              class="flex flex-row gap-4 items-center rounded-md py-4 min-w-[200px] justify-center self-end transition duration-300 w-full bg-[#E34545]"
+              (click)="togglePopup()">
+              <p class="font-medium text-white">
+                {{ section?.visaType?.evisaAggreement?.button }}
+              </p>
+            </button>
+          </div>
+          <div class="flex flex-col gap-3 w-full" *ngIf="visaTypeId == 2">
+            <p class="font-semibold text-[#060606] text-center text-[20px]">
+              {{ section?.visaType?.transitAggreement?.title }}
+            </p>
+            <div class="flex flex-row gap-2 text-start w-full"
+              *ngFor="let item of section?.visaType?.transitAggreement?.items">
+              <svg class="shrink-0 mt-2" width="8" height="8" viewBox="0 0 8 8" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="8" height="8" rx="4" fill="#0079BE" />
+                <rect x="2" y="2" width="4" height="4" rx="2" fill="#F7F7F7" />
+              </svg>
+              <span [innerHTML]="item['']"></span>
+            </div>
+            <button
+              class="flex flex-row gap-4 items-center rounded-md py-3 min-w-[200px] justify-center self-end transition duration-300 w-full bg-[#E34545]"
+              (click)="togglePopup()">
+              <p class="font-medium text-white">
+                {{ section?.visaType?.transitAggreement?.button }}
+              </p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<step-visa-result-success-modal [(visible)]="showSuccessModal" [selectedModel]="selectedModel"
+  [arrivalDate]="application.entryDate" (onCancel)="cancel()"></step-visa-result-success-modal>
+<visa-result-error-modal [(visible)]="showErrorModal"></visa-result-error-modal>
+<visa-result-exempt-modal [(visible)]="showExemptModal" [conditions]="conditions"></visa-result-exempt-modal>
+<missing-profile-modal [(visible)]="missingProfile"></missing-profile-modal>
+<missing-passport-modal [(visible)]="missingPassport" [detail]="missingPassportDetail"></missing-passport-modal>
+<visa-result-date-error-modal [(visible)]="showDateError" self="true"></visa-result-date-error-modal>
+<missing-information-modal [(visible)]="showMissingInformation" [errors]="missingErrors"></missing-information-modal>
+<missing-surname-modal [(visible)]="surnamePopup"></missing-surname-modal>
